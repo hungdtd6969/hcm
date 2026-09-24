@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Tư tưởng Hồ Chí Minh - Phần 2</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d32f2f;
+            margin-bottom: 25px;
+            font-size: 24px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            border: 1px solid #e0e0e0;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fff;
+        }
+
+        .option-label:hover {
+            background-color: #ffebee;
+            border-color: #e57373;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            accent-color: #d32f2f;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #b71c1c;
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .correct-opt {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .wrong-opt {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Trắc nghiệm Tư tưởng Hồ Chí Minh - Câu 16 đến 30</h1>
+    <form id="quizForm">
+        <div id="quizContainer"></div>
+        <button type="button" class="btn-submit" onclick="submitQuiz()">Nộp bài</button>
+    </form>
+    <div id="result"></div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            q: "CÂU 16: Cuộc vận động “Học tập và làm theo tấm gương đạo đức Hồ Chí Minh” được Đảng ta phát động cho đối tượng nào?",
+            options: [
+                "A. Toàn thể cán bộ, công chức",
+                "B. Công nhân, nông dân và trí thức",
+                "C. Toàn Đảng và toàn bộ hệ thống chính trị",
+                "D. Toàn thể đảng viên"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 17: Những câu nói sau đây, câu nào là của Hồ Chí Minh?",
+            options: [
+                "A. “Chính phủ nhân dân bao giờ cũng phải đặt quyền lợi của dân lên trên hết thảy. Việc gì có lợi cho dân thì phải làm, việc gì có hại cho dân thì phải tránh.”",
+                "B. “Không có lý luận cách mạng thì không có cách mạng vận động.”",
+                "C. “Với việc phát triển chế độ dân chủ một cách đầy đủ, nghĩa là với việc làm cho toàn thể quần chúng nhân dân tham gia thực sự bình đẳng và thực sự rộng rãi vào mọi công việc quản lý Nhà nước...”",
+                "D. “Giai cấp vô sản sẽ dùng sự thống trị chính trị của mình để từng bước một đoạt lấy toàn bộ tư bản trong tay giai cấp tư sản...”"
+            ],
+            answer: "A"
+        },
+        {
+            q: "CÂU 18: Giai đoạn “vượt qua thử thách, kiên trì con đường đã xác định cho cách mạng Việt Nam” của Hồ Chí Minh được tính từ thời điểm nào đến thời điểm nào?",
+            options: [
+                "A. Từ năm 1911 đến 1920",
+                "B. Từ năm 1920 đến 1930",
+                "C. Từ năm 1930 đến 1945",
+                "D. Từ năm 1945 đến 1969"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 19: Chọn cụm từ đúng để điền vào chỗ trống: “Toàn thể dân tộc Việt Nam quyết đem … để giữ vững quyền tự do, độc lập ấy.”",
+            options: [
+                "A. Toàn bộ sức lực",
+                "B. Tất cả tinh thần",
+                "C. Toàn bộ tinh thần và lực lượng",
+                "D. Tất cả tinh thần và lực lượng, tính mạng và của cải"
+            ],
+            answer: "D"
+        },
+        {
+            q: "CÂU 20: Nguyễn Tất Thành lấy tên Nguyễn Ái Quốc vào thời gian nào?",
+            options: [
+                "A. 18 tháng 6 năm 1918",
+                "B. 18 tháng 6 năm 1919",
+                "C. 18 tháng 6 năm 1920",
+                "D. 18 tháng 6 năm 1921"
+            ],
+            answer: "B"
+        },
+        {
+            q: "CÂU 21: Một trong những giá trị văn hóa phương Đông được Hồ Chí Minh tiếp thu để hình thành tư tưởng của mình là:",
+            options: [
+                "A. Chủ nghĩa Mác – Lênin",
+                "B. Chủ nghĩa yêu nước",
+                "C. Chủ nghĩa Tam dân",
+                "D. Những mặt tích cực của Nho giáo"
+            ],
+            answer: "D"
+        },
+        {
+            q: "CÂU 22: Theo Hồ Chí Minh, vai trò lãnh đạo của giai cấp công nhân trong cách mạng Việt Nam là do yếu tố nào quy định?",
+            options: [
+                "A. Do ý muốn của Đảng Cộng sản",
+                "B. Do số lượng giai cấp công nhân",
+                "C. Do đặc tính của giai cấp công nhân",
+                "D. Do điều kiện chính trị, kinh tế, xã hội của giai cấp công nhân"
+            ],
+            answer: "D"
+        },
+        {
+            q: "CÂU 23: Hồ Chí Minh tiếp thu tư tưởng văn hóa phương Đông chủ yếu từ:",
+            options: [
+                "A. Nho giáo và Thiên Chúa giáo",
+                "B. Phật giáo và Thiên Chúa giáo",
+                "C. Nho giáo và Phật giáo",
+                "D. Cả A, B, C"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 24: Các bài giảng của Nguyễn Ái Quốc tại các lớp tập huấn cán bộ được Bộ Tuyên truyền của Hội Liên hiệp các dân tộc bị áp bức tập hợp lại và xuất bản thành tác phẩm nào?",
+            options: [
+                "A. Bản án chế độ thực dân Pháp",
+                "B. Đường Kách mệnh",
+                "C. Sửa đổi lối làm việc",
+                "D. Tuyên ngôn Độc lập"
+            ],
+            answer: "B"
+        },
+        {
+            q: "CÂU 25: Theo Hồ Chí Minh, “ở đời và làm người” thì phải làm gì?",
+            options: [
+                "A. Yêu nước",
+                "B. Thương nhân loại bị áp bức",
+                "C. Thương dân",
+                "D. Cả A, B, C"
+            ],
+            answer: "D"
+        },
+        {
+            q: "CÂU 26: Ham muốn tột bậc của Hồ Chí Minh là gì?",
+            options: [
+                "A. Nước được độc lập",
+                "B. Dân được tự do",
+                "C. Đồng bào ai cũng có cơm ăn, áo mặc, được học hành",
+                "D. Cả A, B, C"
+            ],
+            answer: "D"
+        },
+        {
+            q: "CÂU 27: Nguyễn Ái Quốc đã trích dẫn luận điểm nổi tiếng của Lênin: “Không có lý luận cách mệnh thì không có cách mệnh vận động. Chỉ có theo lý luận cách mệnh tiền phong, Đảng cách mệnh mới làm nổi trách nhiệm cách mệnh tiền phong” trong tác phẩm nào?",
+            options: [
+                "A. Bản án chế độ thực dân Pháp",
+                "B. Đường Kách mệnh",
+                "C. Tuyên ngôn Độc lập",
+                "D. Sửa đổi lối làm việc"
+            ],
+            answer: "B"
+        },
+        {
+            q: "CÂU 28: Theo Hồ Chí Minh, học chủ nghĩa Mác – Lênin là để làm gì?",
+            options: [
+                "A. Học thuộc các luận điểm lý luận",
+                "B. Để chứng tỏ trình độ lý luận",
+                "C. Để sống với nhau có tình, có nghĩa",
+                "D. Để làm cán bộ"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 29: Câu nói nào sau đây là của Hồ Chí Minh?",
+            options: [
+                "A. “Học không biết chán, dạy không biết mỏi.”",
+                "B. “Học, học nữa, học mãi.”",
+                "C. “Việc học không bao giờ cùng, còn sống còn phải học.”",
+                "D. “Học đi đôi với hành.”"
+            ],
+            answer: "D"
+        },
+        {
+            q: "CÂU 30: Ai là tác giả của hai câu thơ sau: “Hiền dữ phải đâu là tính sẵn / Phần nhiều do giáo dục mà nên.”",
+            options: [
+                "A. Khổng Tử",
+                "B. Tố Hữu",
+                "C. Lênin",
+                "D. Hồ Chí Minh"
+            ],
+            answer: "D"
+        }
+    ];
+
+    function renderQuiz() {
+        const container = document.getElementById('quizContainer');
+        let html = '';
+
+        quizData.forEach((item, index) => {
+            html += `
+                <div class="question-block" id="q-block-${index}">
+                    <div class="question-title">${item.q}</div>
+                    <div class="options">
+            `;
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0);
+                html += `
+                    <label class="option-label" id="label-${index}-${optVal}">
+                        <input type="radio" name="question-${index}" value="${optVal}">
+                        ${opt}
+                    </label>
+                `;
+            });
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function submitQuiz() {
+        let score = 0;
+
+        quizData.forEach((item, index) => {
+            const selectedInput = document.querySelector(`input[name="question-${index}"]:checked`);
+            const correctAnswer = item.answer;
+
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0);
+                const label = document.getElementById(`label-${index}-${optVal}`);
+                label.classList.remove('correct-opt', 'wrong-opt');
+            });
+
+            const correctLabel = document.getElementById(`label-${index}-${correctAnswer}`);
+            if (correctLabel) correctLabel.classList.add('correct-opt');
+
+            if (selectedInput) {
+                const userAnswer = selectedInput.value;
+                if (userAnswer === correctAnswer) {
+                    score++;
+                } else {
+                    const wrongLabel = document.getElementById(`label-${index}-${userAnswer}`);
+                    if (wrongLabel) wrongLabel.classList.add('wrong-opt');
+                }
+            }
+        });
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        
+        let percentage = Math.round((score / quizData.length) * 100);
+        if (percentage >= 80) {
+            resultDiv.style.backgroundColor = '#d4edda';
+            resultDiv.style.color = '#155724';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Xuất sắc!`;
+        } else {
+            resultDiv.style.backgroundColor = '#fff3cd';
+            resultDiv.style.color = '#856404';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Cần cố gắng thêm!`;
+        }
+
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    renderQuiz();
+</script>
+
+</body>
+</html>

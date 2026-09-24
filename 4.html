@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Tư tưởng Hồ Chí Minh - Phần 4</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d32f2f;
+            margin-bottom: 25px;
+            font-size: 24px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            border: 1px solid #e0e0e0;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fff;
+        }
+
+        .option-label:hover {
+            background-color: #ffebee;
+            border-color: #e57373;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            accent-color: #d32f2f;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #b71c1c;
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .correct-opt {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .wrong-opt {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Trắc nghiệm Tư tưởng Hồ Chí Minh - Video 4</h1>
+    <form id="quizForm">
+        <div id="quizContainer"></div>
+        <button type="button" class="btn-submit" onclick="submitQuiz()">Nộp bài</button>
+    </form>
+    <div id="result"></div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            q: "Câu 1: Luận điểm “Công cuộc giải phóng anh em chỉ có thể thực hiện bằng sự nỗ lực của bản thân anh em” là của ai?",
+            options: [
+                "A. Các Mác",
+                "B. Ăngghen",
+                "C. Lê Duẩn",
+                "D. Hồ Chí Minh"
+            ],
+            answer: "D"
+        },
+        {
+            q: "Câu 2: Luận điểm “Chủ nghĩa tư bản là một con đỉa có một cái vòi bám vào giai cấp vô sản ở chính quốc và một cái vòi khác bám vào giai cấp vô sản ở các nước thuộc địa. Nếu muốn giết con vật ấy, người ta phải đồng thời cắt cả hai vòi” của Hồ Chí Minh được trích trong tác phẩm nào?",
+            options: [
+                "A. Bản án chế độ thực dân Pháp",
+                "B. Đường Kách mệnh",
+                "C. Báo Người Cùng Khổ",
+                "D. Di chúc"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 3: Điền vào chỗ trống: Theo Hồ Chí Minh, “... mở ra con đường giải phóng cho các dân tộc và cả loài người, mở đầu một thời đại mới trong lịch sử.”",
+            options: [
+                "A. Cách mạng tư sản Pháp",
+                "B. Cách mạng Tân Hợi",
+                "C. Cách mạng Tháng Mười",
+                "D. Cách mạng Tháng Tám"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 4: Luận điểm “Chủ nghĩa dân tộc là động lực lớn của đất nước” của Hồ Chí Minh được trích trong tác phẩm nào?",
+            options: [
+                "A. Báo cáo về Bắc Kỳ, Trung Kỳ và Nam Kỳ",
+                "B. Đường Kách mệnh",
+                "C. Bản án chế độ thực dân Pháp",
+                "D. Báo Người Cùng Khổ"
+            ],
+            answer: "A"
+        },
+        {
+            q: "Câu 5: Theo tư tưởng Hồ Chí Minh, đặc trưng kinh tế nổi bật của chủ nghĩa xã hội là gì?",
+            options: [
+                "A. Khoa học kỹ thuật",
+                "B. Cơ cấu tổng hợp",
+                "C. Chế độ tư hữu về tư liệu sản xuất",
+                "D. Sở hữu xã hội về tư liệu sản xuất"
+            ],
+            answer: "D"
+        },
+        {
+            q: "Câu 6: Theo Hồ Chí Minh, chủ nghĩa cộng sản thích ứng ở đâu dễ hơn?",
+            options: [
+                "A. Các nước Tây Âu",
+                "B. Bắc Mỹ",
+                "C. Các nước châu Á phương Đông",
+                "D. Đông Âu"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 7: Con người theo quan niệm của Hồ Chí Minh là:",
+            options: [
+                "A. Động lực của cách mạng",
+                "B. Vốn quý của cách mạng",
+                "C. Vốn quý nhất, nhân tố quyết định đến thành công của cách mạng",
+                "D. Vốn quý nhất, nhân tố quan trọng của cách mạng"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 8: Khái niệm con người trong tư tưởng Hồ Chí Minh để chỉ:",
+            options: [
+                "A. Một con người cụ thể",
+                "B. Một cộng đồng người",
+                "C. Con người nói chung",
+                "D. Con người cụ thể gắn với hoàn cảnh lịch sử cụ thể"
+            ],
+            answer: "D"
+        },
+        {
+            q: "Câu 9: Theo tư tưởng Hồ Chí Minh, nền tảng tư tưởng của Đảng phải dựa trên:",
+            options: [
+                "A. Chủ nghĩa Mác – Lênin",
+                "B. Phật giáo",
+                "C. Nho giáo",
+                "D. Chủ nghĩa Tam dân"
+            ],
+            answer: "A"
+        },
+        {
+            q: "Câu 10: Theo tư tưởng Hồ Chí Minh, một nhà nước pháp quyền có hiệu lực pháp lý mạnh mẽ là:",
+            options: [
+                "A. Một nhà nước hợp hiến",
+                "B. Một nhà nước thống nhất, có quyền quốc gia",
+                "C. Một nhà nước của dân, do dân, vì dân",
+                "D. Một nhà nước không có tiêu cực, không có đặc quyền, đặc lợi"
+            ],
+            answer: "A"
+        }
+    ];
+
+    function renderQuiz() {
+        const container = document.getElementById('quizContainer');
+        let html = '';
+
+        quizData.forEach((item, index) => {
+            html += `
+                <div class="question-block" id="q-block-${index}">
+                    <div class="question-title">${item.q}</div>
+                    <div class="options">
+            `;
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0);
+                html += `
+                    <label class="option-label" id="label-${index}-${optVal}">
+                        <input type="radio" name="question-${index}" value="${optVal}">
+                        ${opt}
+                    </label>
+                `;
+            });
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function submitQuiz() {
+        let score = 0;
+
+        quizData.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+            const correctAnswer = item.answer;
+
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0);
+                const label = document.getElementById(`label-${index}-${optVal}`);
+                label.classList.remove('correct-opt', 'wrong-opt');
+            });
+
+            const correctLabel = document.getElementById(`label-${index}-${correctAnswer}`);
+            if (correctLabel) {
+                correctLabel.classList.add('correct-opt');
+            }
+
+            if (selected) {
+                if (selected.value === correctAnswer) {
+                    score++;
+                } else {
+                    const wrongLabel = document.getElementById(`label-${index}-${selected.value}`);
+                    if (wrongLabel) wrongLabel.classList.add('wrong-opt');
+                }
+            }
+        });
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        
+        let percentage = (score / quizData.length) * 100;
+        if (percentage >= 80) {
+            resultDiv.style.backgroundColor = '#d4edda';
+            resultDiv.style.color = '#155724';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Xuất sắc!`;
+        } else {
+            resultDiv.style.backgroundColor = '#fff3cd';
+            resultDiv.style.color = '#856404';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Cần cố gắng thêm!`;
+        }
+
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    renderQuiz();
+</script>
+
+</body>
+</html>

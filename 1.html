@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Tư tưởng Hồ Chí Minh</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d32f2f;
+            margin-bottom: 25px;
+            font-size: 24px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            border: 1px solid #e0e0e0;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fff;
+        }
+
+        .option-label:hover {
+            background-color: #ffebee;
+            border-color: #e57373;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            accent-color: #d32f2f;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #b71c1c;
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Thống kê và hiển thị đúng/sai */
+        .correct-opt {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .wrong-opt {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Trắc nghiệm Tư tưởng Hồ Chí Minh</h1>
+    <form id="quizForm">
+        <div id="quizContainer"></div>
+        <button type="button" class="btn-submit" onclick="submitQuiz()">Nộp bài</button>
+    </form>
+    <div id="result"></div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            q: "Câu 1: Theo Hồ Chí Minh, cách mạng giải phóng dân tộc là sự nghiệp đoàn kết của?",
+            options: [
+                "A. Giai cấp công nhân",
+                "B. Giai cấp công nhân và giai cấp nông dân",
+                "C. Toàn thể dân tộc trên cơ sở liên minh công nông",
+                "D. Giai cấp tư sản và giai cấp nông dân"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 2: Theo Hồ Chí Minh, cách mạng giải phóng dân tộc muốn giành được thắng lợi phải?",
+            options: [
+                "A. Tiến hành chủ động và sáng tạo",
+                "B. Dựa vào sự thắng lợi của cách mạng ở các nước thuộc địa khác",
+                "C. Dựa vào sự thắng lợi của cuộc cách mạng vô sản ở chính quốc",
+                "D. Phụ thuộc hoàn toàn vào cách mạng tư sản"
+            ],
+            answer: "A"
+        },
+        {
+            q: "Câu 3: Theo Hồ Chí Minh, cách mạng giải phóng dân tộc muốn giành được thắng lợi phải?",
+            options: [
+                "A. Thực hiện bằng con đường bạo lực",
+                "B. Kết hợp lực lượng chính trị của quần chúng với lực lượng vũ trang của nhân dân",
+                "C. Thực hiện bằng con đường bạo lực, kết hợp lực lượng chính trị của quần chúng với lực lượng vũ trang của nhân dân",
+                "D. Thực hiện bằng con đường hòa bình, vận động, thuyết phục"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 4: Theo Hồ Chí Minh, nhiệm vụ hàng đầu, trên hết, trước hết của cách mạng Việt Nam là?",
+            options: [
+                "A. Giải phóng dân tộc",
+                "B. Giải phóng giai cấp",
+                "C. Giải phóng con người",
+                "D. Giải phóng phụ nữ"
+            ],
+            answer: "A"
+        },
+        {
+            q: "Câu 5: Trong tư tưởng Hồ Chí Minh, giải phóng con người trước hết là?",
+            options: [
+                "A. Giải phóng quần chúng lao động",
+                "B. Giải phóng giai cấp công nhân",
+                "C. Giải phóng giai cấp nông dân",
+                "D. Giải phóng tư tưởng cho con người"
+            ],
+            answer: "A"
+        },
+        {
+            q: "Câu 6: “Toàn thể dân tộc Việt Nam quyết đem tất cả tinh thần và lực lượng, tính mạng và của cải để giữ vững quyền tự do, độc lập ấy.” Đoạn trên được trích từ bài viết nào của Hồ Chí Minh?",
+            options: [
+                "A. Thư kêu gọi Tổng khởi nghĩa",
+                "B. Tuyên ngôn Độc lập (1945)",
+                "C. Lời kêu gọi Toàn quốc kháng chiến",
+                "D. Thư gửi đồng bào Nam Bộ"
+            ],
+            answer: "B"
+        },
+        {
+            q: "Câu 7: Theo Hồ Chí Minh, nội dung giải phóng dân tộc theo con đường cách mạng vô sản bao gồm?",
+            options: [
+                "A. Đi từ giải phóng dân tộc tới xã hội cộng sản",
+                "B. Lực lượng lãnh đạo là giai cấp công nhân",
+                "C. Lực lượng cách mạng là toàn dân tộc",
+                "D. Cả A, B, C"
+            ],
+            answer: "D"
+        },
+        {
+            q: "Câu 8: Theo Hồ Chí Minh, cách mạng giải phóng dân tộc trong thời đại mới phải do Đảng Cộng sản lãnh đạo để:",
+            options: [
+                "A. Giác ngộ quần chúng",
+                "B. Tổ chức, tập hợp quần chúng",
+                "C. Đoàn kết với giai cấp vô sản và các dân tộc bị áp bức trên thế giới",
+                "D. Cả A, B, C"
+            ],
+            answer: "D"
+        },
+        {
+            q: "Câu 9: Hồ Chí Minh đã khẳng định chủ nghĩa dân tộc là một động lực lớn ở các nước đang đấu tranh giành độc lập. Đó là chủ nghĩa dân tộc:",
+            options: [
+                "A. Chân chính",
+                "B. Xô-vanh nước lớn",
+                "C. Hẹp hòi",
+                "D. Vị tha"
+            ],
+            answer: "A"
+        },
+        {
+            q: "Câu 10: Theo Hồ Chí Minh, kết hợp nhuần nhuyễn dân tộc với giai cấp, độc lập dân tộc và chủ nghĩa xã hội phản ánh:",
+            options: [
+                "A. Quy luật khách quan của cách mạng giải phóng dân tộc trong thời đại cách mạng vô sản",
+                "B. Mối quan hệ giữa mục tiêu giải phóng dân tộc với mục tiêu giải phóng giai cấp, giải phóng con người",
+                "C. Mối quan hệ giữa mục tiêu trước mắt và mục tiêu lâu dài",
+                "D. A, B, C đều đúng"
+            ],
+            answer: "D"
+        }
+    ];
+
+    function renderQuiz() {
+        const container = document.getElementById('quizContainer');
+        let html = '';
+
+        quizData.forEach((item, index) => {
+            html += `
+                <div class="question-block" id="q-block-${index}">
+                    <div class="question-title">${item.q}</div>
+                    <div class="options">
+            `;
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0); // Lấy chữ cái A, B, C, D
+                html += `
+                    <label class="option-label" id="label-${index}-${optVal}">
+                        <input type="radio" name="question-${index}" value="${optVal}">
+                        ${opt}
+                    </label>
+                `;
+            });
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function submitQuiz() {
+        let score = 0;
+
+        quizData.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+            const correctAnswer = item.answer;
+
+            // Xóa style cũ nếu nộp lại
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0);
+                const label = document.getElementById(`label-${index}-${optVal}`);
+                label.classList.remove('correct-opt', 'wrong-opt');
+            });
+
+            // Tô màu đáp án đúng
+            const correctLabel = document.getElementById(`label-${index}-${correctAnswer}`);
+            if (correctLabel) {
+                correctLabel.classList.add('correct-opt');
+            }
+
+            // Kiểm tra lựa chọn người dùng
+            if (selected) {
+                if (selected.value === correctAnswer) {
+                    score++;
+                } else {
+                    const wrongLabel = document.getElementById(`label-${index}-${selected.value}`);
+                    if (wrongLabel) wrongLabel.classList.add('wrong-opt');
+                }
+            }
+        });
+
+        // Hiển thị kết quả
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        
+        let percentage = (score / quizData.length) * 100;
+        if (percentage >= 80) {
+            resultDiv.style.backgroundColor = '#d4edda';
+            resultDiv.style.color = '#155724';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Xuất sắc!`;
+        } else {
+            resultDiv.style.backgroundColor = '#fff3cd';
+            resultDiv.style.color = '#856404';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Cần cố gắng thêm!`;
+        }
+
+        // Cuộn xuống xem kết quả
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Chạy render khi tải trang
+    renderQuiz();
+</script>
+
+</body>
+</html>

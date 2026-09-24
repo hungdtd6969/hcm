@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Tư tưởng Hồ Chí Minh</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d32f2f;
+            margin-bottom: 25px;
+            font-size: 24px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            border: 1px solid #e0e0e0;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fff;
+        }
+
+        .option-label:hover {
+            background-color: #ffebee;
+            border-color: #e57373;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            accent-color: #d32f2f;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #b71c1c;
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .correct-opt {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .wrong-opt {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Trắc nghiệm Tư tưởng Hồ Chí Minh</h1>
+    <form id="quizForm">
+        <div id="quizContainer"></div>
+        <button type="button" class="btn-submit" onclick="submitQuiz()">Nộp bài</button>
+    </form>
+    <div id="result"></div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            q: "CÂU 1: Trong các nguồn gốc hình thành tư tưởng Hồ Chí Minh, nguồn gốc nào quan trọng nhất, quyết định đối với việc hình thành và phát triển tư tưởng Hồ Chí Minh?",
+            options: [
+                "A. Truyền thống văn hóa của dân tộc Việt Nam",
+                "B. Những phẩm chất chủ quan của Hồ Chí Minh",
+                "C. Tinh hoa văn hóa loài người",
+                "D. Chủ nghĩa Mác – Lênin"
+            ],
+            answer: "D"
+        },
+        {
+            q: "CÂU 2: Chọn cụm từ đúng để điền vào chỗ trống: “Theo Hồ Chí Minh, muốn cứu nước và … không có con đường nào khác con đường …”",
+            options: [
+                "A. Giải phóng dân tộc – cách mạng vô sản",
+                "B. Giải phóng dân tộc – cách mạng tư sản",
+                "C. Giành độc lập – cách mạng vô sản",
+                "D. Giành độc lập tự do – cách mạng văn hóa"
+            ],
+            answer: "A"
+        },
+        {
+            q: "CÂU 3: Yếu tố nào quan trọng nhất, là cơ sở thế giới quan và phương pháp luận của tư tưởng Hồ Chí Minh?",
+            options: [
+                "A. Tư tưởng Hồ Chí Minh",
+                "B. Chủ nghĩa yêu nước",
+                "C. Chủ nghĩa Mác – Lênin",
+                "D. Tinh hoa văn hóa nhân loại"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 4: Nền tảng tư tưởng, kim chỉ nam cho hành động của Đảng và cách mạng Việt Nam là gì?",
+            options: [
+                "A. Chủ nghĩa Mác – Lênin và tư tưởng Hồ Chí Minh",
+                "B. Triết học Mác – Lênin",
+                "C. Kinh tế Mác – Lênin",
+                "D. Chủ nghĩa xã hội khoa học"
+            ],
+            answer: "A"
+        },
+        {
+            q: "CÂU 5: Trong các nguồn gốc hình thành tư tưởng Hồ Chí Minh, nguồn gốc nào quan trọng nhất, quyết định nhất?",
+            options: [
+                "A. Tư tưởng Hồ Chí Minh",
+                "B. Chủ nghĩa yêu nước",
+                "C. Chủ nghĩa Mác – Lênin",
+                "D. Tinh hoa văn hóa nhân loại"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 6: Nguyễn Ái Quốc lấy tên Hồ Chí Minh vào thời gian nào?",
+            options: [
+                "A. 19 tháng 5 năm 1941",
+                "B. 13 tháng 8 năm 1942",
+                "C. 15 tháng 10 năm 1945",
+                "D. 2 tháng 9 năm 1945"
+            ],
+            answer: "B"
+        },
+        {
+            q: "CÂU 7: Theo Hồ Chí Minh, ai là người đầu tiên đã đặt cơ sở cho một thời đại mới, thực sự cách mạng trong các nước thuộc địa?",
+            options: [
+                "A. Các Mác",
+                "B. Lênin",
+                "C. Stalin",
+                "D. Ăngghen"
+            ],
+            answer: "B"
+        },
+        {
+            q: "CÂU 8: Trong Cương lĩnh chính trị đầu tiên của Đảng do Nguyễn Ái Quốc soạn thảo, phương hướng chiến lược của cách mạng Việt Nam là làm tư sản dân quyền cách mạng và thổ địa cách mạng để đi tới …",
+            options: [
+                "A. Chủ nghĩa tư bản",
+                "B. Chủ nghĩa xã hội",
+                "C. Xã hội cộng sản",
+                "D. Thời kỳ quá độ lên chủ nghĩa xã hội"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 9: “Tỷ Pháp cầu tiến bộ” là câu Hồ Chí Minh nói về chủ trương cứu nước của ai?",
+            options: [
+                "A. Phái chủ hòa trong triều đình nhà Nguyễn",
+                "B. Phan Bội Châu",
+                "C. Phan Châu Trinh",
+                "D. Nguyễn Thế Truyền"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 10: Hồ Chí Minh nói: “Chủ nghĩa xã hội là lấy nhà máy, xe lửa, ngân hàng làm của chung; ai làm nhiều thì ăn nhiều, ai làm ít thì ăn ít, ai không làm thì không ăn, tất nhiên là trừ những người già cả, đau yếu và trẻ con.” Định nghĩa này nhấn mạnh đến lĩnh vực nào?",
+            options: [
+                "A. Chính trị",
+                "B. Xã hội",
+                "C. Kinh tế",
+                "D. Văn hóa"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 11: UNESCO ra quyết định công nhận Hồ Chí Minh là “Anh hùng giải phóng dân tộc, Nhà văn hóa kiệt xuất của Việt Nam” vào năm nào?",
+            options: [
+                "A. 1969",
+                "B. 1975",
+                "C. 1987",
+                "D. 1990"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 12: Hồ Chí Minh nói: “Dù hy sinh tới đâu, dù phải đốt cháy cả dãy Trường Sơn cũng phải kiên quyết giành cho được độc lập” vào thời gian nào?",
+            options: [
+                "A. Tháng 2 năm 1930",
+                "B. Tháng 12 năm 1960",
+                "C. Tháng 8 năm 1945",
+                "D. Tháng 9 năm 1954"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 13: Chọn phương án trả lời đúng với tư tưởng Hồ Chí Minh về các thời kỳ hình thành và phát triển tư tưởng:",
+            options: [
+                "A. Từ năm 1890 đến 1971: Thời kỳ nghiên cứu, khảo sát thực tế đến với chủ nghĩa Mác – Lênin",
+                "B. Từ năm 1911 đến 1920: Thời kỳ hình thành tư tưởng yêu nước, chí hướng cứu nước",
+                "C. Từ năm 1921 đến 1930: Thời kỳ hình thành cơ bản con đường cách mạng Việt Nam",
+                "D. Từ năm 1945 đến 1969: Thời kỳ vượt qua khó khăn, kiên trì con đường đã chọn"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 14: Nguyễn Ái Quốc đọc “Sơ thảo lần thứ nhất Luận cương về vấn đề dân tộc và vấn đề thuộc địa” của Lênin vào thời gian nào?",
+            options: [
+                "A. Tháng 7 năm 1917",
+                "B. Tháng 7 năm 1918",
+                "C. Tháng 7 năm 1920",
+                "D. Tháng 7 năm 1922"
+            ],
+            answer: "C"
+        },
+        {
+            q: "CÂU 15: Trong tác phẩm Đường Kách mệnh, Nguyễn Ái Quốc viết: “Công nông là …, còn học trò, nhà buôn nhỏ, địa chủ nhỏ là bầu bạn cách mạng của công nông.”",
+            options: [
+                "A. Cốt cách mạng",
+                "B. Gốc cách mạng",
+                "C. Động lực của cách mạng",
+                "D. Chủ cách mạng"
+            ],
+            answer: "B"
+        }
+    ];
+
+    function renderQuiz() {
+        const container = document.getElementById('quizContainer');
+        let html = '';
+
+        quizData.forEach((item, index) => {
+            html += `
+                <div class="question-block" id="q-block-${index}">
+                    <div class="question-title">${item.q}</div>
+                    <div class="options">
+            `;
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0);
+                html += `
+                    <label class="option-label" id="label-${index}-${optVal}">
+                        <input type="radio" name="question-${index}" value="${optVal}">
+                        ${opt}
+                    </label>
+                `;
+            });
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function submitQuiz() {
+        let score = 0;
+
+        quizData.forEach((item, index) => {
+            const selectedInput = document.querySelector(`input[name="question-${index}"]:checked`);
+            const correctAnswer = item.answer;
+
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0);
+                const label = document.getElementById(`label-${index}-${optVal}`);
+                label.classList.remove('correct-opt', 'wrong-opt');
+            });
+
+            const correctLabel = document.getElementById(`label-${index}-${correctAnswer}`);
+            if (correctLabel) correctLabel.classList.add('correct-opt');
+
+            if (selectedInput) {
+                const userAnswer = selectedInput.value;
+                if (userAnswer === correctAnswer) {
+                    score++;
+                } else {
+                    const wrongLabel = document.getElementById(`label-${index}-${userAnswer}`);
+                    if (wrongLabel) wrongLabel.classList.add('wrong-opt');
+                }
+            }
+        });
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        
+        let percentage = Math.round((score / quizData.length) * 100);
+        if (percentage >= 80) {
+            resultDiv.style.backgroundColor = '#d4edda';
+            resultDiv.style.color = '#155724';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Xuất sắc!`;
+        } else {
+            resultDiv.style.backgroundColor = '#fff3cd';
+            resultDiv.style.color = '#856404';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Cần cố gắng thêm!`;
+        }
+
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    renderQuiz();
+</script>
+
+</body>
+</html>

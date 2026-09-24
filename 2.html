@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Tư tưởng Hồ Chí Minh - Phần 2</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d32f2f;
+            margin-bottom: 25px;
+            font-size: 24px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            border: 1px solid #e0e0e0;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fff;
+        }
+
+        .option-label:hover {
+            background-color: #ffebee;
+            border-color: #e57373;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            accent-color: #d32f2f;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #b71c1c;
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .correct-opt {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .wrong-opt {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Trắc nghiệm Tư tưởng Hồ Chí Minh</h1>
+    <form id="quizForm">
+        <div id="quizContainer"></div>
+        <button type="button" class="btn-submit" onclick="submitQuiz()">Nộp bài</button>
+    </form>
+    <div id="result"></div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            q: "Câu 1: Một trong những nguồn gốc để hình thành tư tưởng Hồ Chí Minh là Người đã tiếp thu:",
+            options: [
+                "A. Tinh hoa văn hóa nhân loại",
+                "B. Triết học cổ điển Đức",
+                "C. Tư tưởng xã hội chủ nghĩa không tưởng Pháp",
+                "D. Triết học Hy Lạp cổ đại"
+            ],
+            answer: "A"
+        },
+        {
+            q: "Câu 2: Theo tư tưởng Hồ Chí Minh, ưu điểm lớn nhất của học thuyết Khổng Tử là gì?",
+            options: [
+                "A. Tinh thần hiếu học",
+                "B. Quản lý xã hội bằng đạo đức",
+                "C. Sự tu dưỡng đạo đức cá nhân",
+                "D. Giải phóng con người"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 3: Nguyễn Ái Quốc đọc Sơ thảo lần thứ nhất những luận cương về vấn đề dân tộc và vấn đề thuộc địa của Lênin vào thời gian nào?",
+            options: [
+                "A. Tháng 7 năm 1917",
+                "B. Tháng 7 năm 1919",
+                "C. Tháng 7 năm 1920",
+                "D. Tháng 7 năm 1925"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 4: Nguyễn Ái Quốc gửi Bản yêu sách của nhân dân An Nam tới Hội nghị Versailles vào ngày tháng năm nào?",
+            options: [
+                "A. 18 tháng 6 năm 1917",
+                "B. 18 tháng 6 năm 1918",
+                "C. 18 tháng 6 năm 1919",
+                "D. 18 tháng 6 năm 1920"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 5: Một trong những truyền thống tốt đẹp của tư tưởng và văn hóa Việt Nam được Hồ Chí Minh tiếp thu để hình thành tư tưởng của Người là:",
+            options: [
+                "A. Chủ nghĩa yêu nước Việt Nam",
+                "B. Học thuyết chính trị của Nho giáo",
+                "C. Tư tưởng vị tha của Phật giáo",
+                "D. Cả A, B, C"
+            ],
+            answer: "A"
+        },
+        {
+            q: "Câu 6: Chọn phương án đúng với tư tưởng Hồ Chí Minh:",
+            options: [
+                "A. Cách mạng giải phóng dân tộc giành thắng lợi đồng thời với thắng lợi của cách mạng vô sản ở chính quốc",
+                "B. Thắng lợi của cách mạng vô sản ở thuộc địa phải phụ thuộc vào thắng lợi của cách mạng vô sản ở chính quốc",
+                "C. Thắng lợi của cách mạng vô sản tồn tại song song với thắng lợi của cách mạng tư sản",
+                "D. Cách mạng giải phóng dân tộc ở thuộc địa có khả năng giành được thắng lợi trước cách mạng vô sản ở chính quốc"
+            ],
+            answer: "D"
+        },
+        {
+            q: "Câu 7: Giai đoạn hình thành cơ bản tư tưởng về cách mạng Việt Nam của Hồ Chí Minh được tính từ:",
+            options: [
+                "A. 1911 – 1920",
+                "B. 1921 – 1930",
+                "C. 1930 – 1941",
+                "D. 1941 – 1945"
+            ],
+            answer: "B"
+        },
+        {
+            q: "Câu 8: Vấn đề dân tộc trong tư tưởng Hồ Chí Minh trong thời đại cách mạng vô sản là vấn đề:",
+            options: [
+                "A. Dân tộc nói chung",
+                "B. Dân tộc tư sản",
+                "C. Dân tộc thuộc địa",
+                "D. Dân tộc tập người"
+            ],
+            answer: "C"
+        },
+        {
+            q: "Câu 9: Thực chất vấn đề dân tộc thuộc địa trong tư tưởng Hồ Chí Minh là:",
+            options: [
+                "A. Đấu tranh giải phóng dân tộc khỏi sự áp bức, thống trị của nước ngoài, giành độc lập dân tộc, thành lập nhà nước dân tộc độc lập và đưa đất nước phát triển theo xu thế của thời đại",
+                "B. Đòi quyền tự do dân chủ tối thiểu cho nhân dân",
+                "C. Đòi quyền bình đẳng dân tộc",
+                "D. Đòi quyền dân tộc tự quyết"
+            ],
+            answer: "A"
+        },
+        {
+            q: "Câu 10: Hồ Chí Minh đã dùng hình tượng nào dưới đây để chỉ về chủ nghĩa tư bản?",
+            options: [
+                "A. Con bạch tuộc",
+                "B. Con đỉa hai vòi",
+                "C. Con chim đại bàng",
+                "D. Con vẹt"
+            ],
+            answer: "B"
+        }
+    ];
+
+    function renderQuiz() {
+        const container = document.getElementById('quizContainer');
+        let html = '';
+
+        quizData.forEach((item, index) => {
+            html += `
+                <div class="question-block" id="q-block-${index}">
+                    <div class="question-title">${item.q}</div>
+                    <div class="options">
+            `;
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0);
+                html += `
+                    <label class="option-label" id="label-${index}-${optVal}">
+                        <input type="radio" name="question-${index}" value="${optVal}">
+                        ${opt}
+                    </label>
+                `;
+            });
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function submitQuiz() {
+        let score = 0;
+
+        quizData.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+            const correctAnswer = item.answer;
+
+            item.options.forEach(opt => {
+                const optVal = opt.charAt(0);
+                const label = document.getElementById(`label-${index}-${optVal}`);
+                label.classList.remove('correct-opt', 'wrong-opt');
+            });
+
+            const correctLabel = document.getElementById(`label-${index}-${correctAnswer}`);
+            if (correctLabel) {
+                correctLabel.classList.add('correct-opt');
+            }
+
+            if (selected) {
+                if (selected.value === correctAnswer) {
+                    score++;
+                } else {
+                    const wrongLabel = document.getElementById(`label-${index}-${selected.value}`);
+                    if (wrongLabel) wrongLabel.classList.add('wrong-opt');
+                }
+            }
+        });
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        
+        let percentage = (score / quizData.length) * 100;
+        if (percentage >= 80) {
+            resultDiv.style.backgroundColor = '#d4edda';
+            resultDiv.style.color = '#155724';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Xuất sắc!`;
+        } else {
+            resultDiv.style.backgroundColor = '#fff3cd';
+            resultDiv.style.color = '#856404';
+            resultDiv.innerHTML = `Kết quả: ${score}/${quizData.length} câu (${percentage}%) - Cần cố gắng thêm!`;
+        }
+
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    renderQuiz();
+</script>
+
+</body>
+</html>
